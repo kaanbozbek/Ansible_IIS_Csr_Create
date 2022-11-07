@@ -1,0 +1,17 @@
+- name: Creating site
+  hosts: "{{ Server_Type }}"
+  order: sorted
+  serial: 1
+  become: yes
+  become_method: runas
+  collections:
+    - ansible.windows
+  tasks:
+    - name: Copy file to server
+      win_copy:
+        src: ./Create_Csr.ps1
+        dest: C:\Create_Csr.ps1
+    - name: Run remote PowerShell Script to Create CSR
+      win_command: powershell.exe -ExecutionPolicy ByPass -File C:/Create_Csr.ps1 {{ CertName }} {{ Organization }} {{ Organizational_Unit }} {{ City }} {{ Country }} 
+
+
